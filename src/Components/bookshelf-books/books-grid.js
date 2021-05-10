@@ -2,16 +2,25 @@ import React from "react";
 import Book from "../Book/book";
 
 class BooksGrid extends React.Component {
-    
-    
-  render() {     
-    return <ol className="books-grid">
+
+  render() {
+    return (
+      <ol className="books-grid">
         {this.props.readingList.map((b) => {
-          return <li>
-              <Book url={b.url} title={b.title} authors={b.authors} />
-            </li>;
+          return (
+            <li>
+              <Book
+                book = {b}
+                url={b.url}
+                title={b.title}
+                authors={b.authors}
+                onReadStatusChange={this.props.onReadStatusChange}
+              />
+            </li>
+          );
         })}
-      </ol>;
+      </ol>
+    );
   }
 }
 
