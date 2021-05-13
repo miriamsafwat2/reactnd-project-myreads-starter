@@ -7,17 +7,9 @@ class BooksGrid extends React.Component {
     return (
       <ol className="books-grid">
         {this.props.readingList.map((b) => {
-          return (
-            <li>
-              <Book
-                book = {b}
-                url={b.url}
-                title={b.title}
-                authors={b.authors}
-                onReadStatusChange={this.props.onReadStatusChange}
-              />
-            </li>
-          );
+          return <li>
+              <Book book={b} url={b.imageLinks.thumbnail} title={b.title} authors={b.authors} onReadStatusChange={this.props.onReadStatusChange} />
+            </li>;
         })}
       </ol>
     );
