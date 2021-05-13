@@ -1,16 +1,16 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
 import './App.css'
 import BooksGrid from './Components/bookshelf-books/books-grid'
 import * as API from './BooksAPI.js'
  
-
-
 class BooksApp extends React.Component {
   constructor(props) {
     super(props);
     this.onReadStatusChange = this.onReadStatusChange.bind(this);
-    console.log(API.getAll());
+    this.search = this.search.bind(this);
+
+    //console.log(API.getAll());
+    console.log(API.search("react"));
   }
   state = {
     /**
@@ -20,18 +20,28 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     books: [],
+    booksSearched: [],
     showSearchPage: false,
+    value: "",
   };
 
   componentDidMount = () => {
-    API.getAll()
-      .then((books) => {
-        this.setState({ books: books });
-      })
+    API.getAll().then((books) => {
+      this.setState({ books: books });
+    });
   };
 
+  search(event) {
+    this.setState({ value: event.target.value })
+    //console.log(event.target.value);
+    API.search(event.target.value).then(books =>
+    this.setState({ booksSearched: books }));
+    
+    console.log(this.state.booksSearched);
+  }
+
   onReadStatusChange = (shelf, book) => {
-    API.update(book, shelf).then(()=>{
+    API.update(book, shelf).then(() => {
       book.shelf = shelf;
       this.setState((oldState) => ({
         books: oldState.books
@@ -39,7 +49,7 @@ class BooksApp extends React.Component {
           .concat([book]),
       }));
     });
-    }
+  };
 
   render() {
     return <div className="app">
@@ -59,11 +69,12 @@ class BooksApp extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author" />
+                <input type="text" placeholder="Search by title or author" value={this.state.value} onChange={this.search} />
               </div>
             </div>
             <div className="search-books-results">
               <ol className="books-grid" />
+              <BooksGrid readingList={this.state.booksSearched} onReadStatusChange={this.onReadStatusChange} />
             </div>
           </div> : <div className="list-books">
             <div className="list-books-title">
