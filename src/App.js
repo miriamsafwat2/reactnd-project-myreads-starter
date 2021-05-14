@@ -38,8 +38,15 @@ class BooksApp extends React.Component {
     API.search(event.target.value).then((books) => {
       if (books === undefined || books.length === 0) {
         this.setState({ booksSearched: [] });
-        //return;
       } else if (books.length > 0) {
+        // if the book is already on the shelf, add its shelf
+        for(let i = 0; i < books.length; i++){
+          for(let j = 0; j < this.state.books.length; j++){
+            if(books[i].id === this.state.books[j].id){
+              books[i].shelf = this.state.books[j].shelf;
+            }
+          }
+        }
         this.setState({ booksSearched: books });
 
         console.log(this.state.booksSearched);
@@ -62,9 +69,7 @@ class BooksApp extends React.Component {
     return <div className="app">
         <Route path="/search" render={() => <div className="search-books">
               <div className="search-books-bar">
-                
-                  <Link to="/">Back</Link>
-                
+                  <Link to="/">Back</Link>               
                 <div className="search-books-input-wrapper">
                   <input type="text" placeholder="Search by title or author" value={this.state.value} onChange={this.search} />
                 </div>
