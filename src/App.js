@@ -14,15 +14,8 @@ class BooksApp extends React.Component {
     console.log(API.search("react"));
   }
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
     books: [],
     booksSearched: [],
-    showSearchPage: false,
     value: "",
   };
 
@@ -34,11 +27,13 @@ class BooksApp extends React.Component {
 
   search(event) {
     this.setState({ value: event.target.value });
-    //console.log(event.target.value);
     API.search(event.target.value).then((books) => {
       if (books === undefined || books.length === 0) {
         this.setState({ booksSearched: [] });
       } else if (books.length > 0) {
+        // make the shelf status: none
+        books.map(b => b.shelf = 'none');
+
         // if the book is already on the shelf, add its shelf
         for(let i = 0; i < books.length; i++){
           for(let j = 0; j < this.state.books.length; j++){
