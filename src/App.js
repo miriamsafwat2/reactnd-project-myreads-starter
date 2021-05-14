@@ -34,10 +34,16 @@ class BooksApp extends React.Component {
   search(event) {
     this.setState({ value: event.target.value })
     //console.log(event.target.value);
-    API.search(event.target.value).then(books =>
-    this.setState({ booksSearched: books }));
+    API.search(event.target.value).then(books => {
+      if (books === undefined || books.length === 0) {
+        this.setState({ booksSearched: [] });
+        //return;
+      }else if ( books.length > 0){
+        this.setState({ booksSearched: books })
     
-    console.log(this.state.booksSearched);
+        console.log(this.state.booksSearched);
+      }
+    });
   }
 
   onReadStatusChange = (shelf, book) => {
@@ -73,7 +79,6 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid" />
               <BooksGrid readingList={this.state.booksSearched} onReadStatusChange={this.onReadStatusChange} />
             </div>
           </div> : <div className="list-books">
