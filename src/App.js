@@ -44,7 +44,7 @@ class BooksApp extends React.Component {
 
         console.log(this.state.booksSearched);
       }
-    });
+    }).catch((error) => console.log(error) );
   }
 
   onReadStatusChange = (shelf, book) => {
