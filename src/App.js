@@ -62,11 +62,9 @@ class BooksApp extends React.Component {
     return <div className="app">
         <Route path="/search" render={() => <div className="search-books">
               <div className="search-books-bar">
-                <button className="close-search" onClick={() => this.setState(
-                      { showSearchPage: false }
-                    )}>
-                  <Link to="/">Close</Link>
-                </button>
+                
+                  <Link to="/">Back</Link>
+                
                 <div className="search-books-input-wrapper">
                   <input type="text" placeholder="Search by title or author" value={this.state.value} onChange={this.search} />
                 </div>
