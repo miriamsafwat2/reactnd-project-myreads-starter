@@ -4,7 +4,7 @@ class BookShelfChanger extends React.Component {
   
    constructor(props) {
     super(props);
-    this.state = { value: "none" };
+    this.state = { value: props.book.shelf };
   }
  
 
