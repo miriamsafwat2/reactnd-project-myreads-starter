@@ -1,8 +1,9 @@
-import React from 'react'
-import './App.css'
-import BooksGrid from './Components/bookshelf-books/books-grid'
-import * as API from './BooksAPI.js'
- 
+import React from "react";
+import { Route, Link } from "react-router-dom";
+import "./App.css";
+import BooksGrid from "./Components/bookshelf-books/books-grid";
+import * as API from "./BooksAPI.js";
+
 class BooksApp extends React.Component {
   constructor(props) {
     super(props);
@@ -32,15 +33,15 @@ class BooksApp extends React.Component {
   };
 
   search(event) {
-    this.setState({ value: event.target.value })
+    this.setState({ value: event.target.value });
     //console.log(event.target.value);
-    API.search(event.target.value).then(books => {
+    API.search(event.target.value).then((books) => {
       if (books === undefined || books.length === 0) {
         this.setState({ booksSearched: [] });
         //return;
-      }else if ( books.length > 0){
-        this.setState({ booksSearched: books })
-    
+      } else if (books.length > 0) {
+        this.setState({ booksSearched: books });
+
         console.log(this.state.booksSearched);
       }
     });
@@ -58,67 +59,59 @@ class BooksApp extends React.Component {
   };
 
   render() {
-    return (<div className="app">
-        {this.state.showSearchPage ? 
-        
-        <div className="search-books">
-            <div className="search-books-bar">
-              <button className="close-search" onClick={() => this.setState(
-                    { showSearchPage: false }
-                  )}>
-                Close
-              </button>
-              <div className="search-books-input-wrapper">
-                <input type="text" placeholder="Search by title or author" value={this.state.value} onChange={this.search} />
-              </div>
-            </div>
-            <div className="search-books-results">
-              <BooksGrid readingList={this.state.booksSearched} onReadStatusChange={this.onReadStatusChange} />
-            </div>
-          </div> : <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <BooksGrid readingList={this.state.books.filter((b) => b.shelf === "currentlyReading")} onReadStatusChange={this.onReadStatusChange} />
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <BooksGrid readingList={this.state.books.filter((b) => b.shelf === "wantToRead")} onReadStatusChange={this.onReadStatusChange} />
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <BooksGrid readingList={this.state.books.filter((b) => b.shelf === "read")} onReadStatusChange={this.onReadStatusChange} />
-                  </div>
+    return <div className="app">
+        <Route path="/search" render={() => <div className="search-books">
+              <div className="search-books-bar">
+                <button className="close-search" onClick={() => this.setState(
+                      { showSearchPage: false }
+                    )}>
+                  <Link to="/">Close</Link>
+                </button>
+                <div className="search-books-input-wrapper">
+                  <input type="text" placeholder="Search by title or author" value={this.state.value} onChange={this.search} />
                 </div>
               </div>
-            </div>
-            <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>
-                Add a book
-              </button>
-            </div>
-          </div>}
-      </div>
-      );}}
+              <div className="search-books-results">
+                <BooksGrid readingList={this.state.booksSearched} onReadStatusChange={this.onReadStatusChange} />
+              </div>
+            </div>} />
 
+        <Route path="/" render={() => <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+              <div className="list-books-content">
+                <div>
+                  <div className="bookshelf">
+                    <h2 className="bookshelf-title">Currently Reading</h2>
+                    <div className="bookshelf-books">
+                      <BooksGrid readingList={this.state.books.filter((b) => b.shelf === "currentlyReading")} onReadStatusChange={this.onReadStatusChange} />
+                    </div>
+                  </div>
+                  <div className="bookshelf">
+                    <h2 className="bookshelf-title">Want to Read</h2>
+                    <div className="bookshelf-books">
+                      <BooksGrid readingList={this.state.books.filter((b) => b.shelf === "wantToRead")} onReadStatusChange={this.onReadStatusChange} />
+                    </div>
+                  </div>
+                  <div className="bookshelf">
+                    <h2 className="bookshelf-title">Read</h2>
+                    <div className="bookshelf-books">
+                      <BooksGrid readingList={this.state.books.filter((b) => b.shelf === "read")} onReadStatusChange={this.onReadStatusChange} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="open-search">
+                <button
+                  onClick={() => this.setState({ showSearchPage: true })}
+                >
+                  Add a book
+                </button>
+              </div>
+            </div>} />
+      </div>;
+  }
+}
 
-  /*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */
-
-
-export default BooksApp
+export default BooksApp;
