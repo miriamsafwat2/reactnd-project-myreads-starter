@@ -27,7 +27,7 @@ class BooksApp extends React.Component {
   search(event) {
     this.setState({ value: event.target.value });
     API.search(event.target.value).then((books) => {
-      if (books === undefined || books.length === 0) {
+     if(books.error || books === undefined || books.length === 0) {
         this.setState({ booksSearched: [] });
       } else if (books.length > 0) {
         // make the shelf status: none
