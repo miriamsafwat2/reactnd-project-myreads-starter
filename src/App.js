@@ -27,25 +27,27 @@ class BooksApp extends React.Component {
   search(event) {
     this.setState({ value: event.target.value });
     API.search(event.target.value).then((books) => {
-     if(books.error || books === undefined || books.length === 0) {
-        this.setState({ booksSearched: [] });
-      } else if (books.length > 0) {
-        // make the shelf status: none
-        books.map(b => b.shelf = 'none');
+     if (books.error || books === undefined || books.length === 0) {
+       this.setState({ booksSearched: [] });
+     } else if (books.length > 0) {
+       books.map((b) => (b.shelf = "none"));
 
-        // if the book is already on the shelf, add its shelf
-        for(let i = 0; i < books.length; i++){
-          for(let j = 0; j < this.state.books.length; j++){
-            if(books[i].id === this.state.books[j].id){
-              books[i].shelf = this.state.books[j].shelf;
-            }
-          }
-        }
-        this.setState({ booksSearched: books });
+       // if the book is already on the shelf, add its shelf
+       for (let i = 0; i < books.length; i++) {
+         for (let j = 0; j < this.state.books.length; j++) {
+           if (books[i].id === this.state.books[j].id) {
+             books[i].shelf = this.state.books[j].shelf;
+           }
+         }
+       }
+       this.setState({ booksSearched: books });
 
-        console.log(this.state.booksSearched);
-      }
-    }).catch((error) => console.log(error) );
+       console.log(this.state.booksSearched);
+     }
+    }).catch((error) => 
+    console.log(error),
+    this.setState({ booksSearched: [] }),
+    );
   }
 
   onReadStatusChange = (shelf, book) => {

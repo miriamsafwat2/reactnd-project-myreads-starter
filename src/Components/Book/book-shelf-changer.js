@@ -2,12 +2,8 @@ import React from 'react'
 
 class BookShelfChanger extends React.Component {
   
-   constructor(props) {
-    super(props);
-    this.state = { value: props.book.shelf };
-  }
+  state = { value: this.props.book.shelf };
  
-
   change(event){
       this.setState({
         value: event.target.value,
